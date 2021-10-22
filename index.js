@@ -55,48 +55,23 @@ const contarPuntos = (equipo, listaAnotaciones) => {
   return puntos
 }
 
-//returna una lista con los puntos de cada uno de los 10 jugadores
-const obtenerTodosLosJugadores = (jugadoresA, jugadoresB) => {
-  let totalJugadores = []
-  listasConcatenadas(jugadoresA,jugadoresB).forEach(element => {
-    totalJugadores.push({'apellido': element, 'anotacion': 0})
-  })
-  return totalJugadores
-}
-
-const listasConcatenadas = (lista1, lista2) =>{
-  return lista1.concat(lista2)
-}
-
-//agarra a cada jugador, y recorre todo el log para ver cuantas veces aparece ese jugador y cuantos goles hizo, y los va sumando.
-const obtenerAnotacionPorJugador = (listaAnotaciones, jugadores) =>{
-  jugadores.forEach(jugador => {
-    listaAnotaciones.forEach(jugadorLog => {
-      if (jugador.apellido === jugadorLog.apellido){
-        jugador.anotacion += jugadorLog.anotacion
-      }
-    })
-  })
-  return jugadores
-}
-
-//una vez que tiene la lista por jugador, y cada una de sus anotaciones, busca el maximo.
-const goleador = (listaAnotaciones, jugadoresA, jugadoresB) => {
-  let max = 0
-  let goleador = ''
-  let anotacionPorJugador = obtenerAnotacionPorJugador(listaAnotaciones, obtenerTodosLosJugadores(jugadoresA, jugadoresB))
-  anotacionPorJugador.forEach(jugador => {
-    if (jugador.anotacion > max ){
-      max = jugador.anotacion
-      goleador = jugador.apellido
+const obtenerGoleador = (listaAnotaciones) =>{
+  nombres  = []
+  goles = []
+  listaAnotaciones.forEach((item) => {
+      if (nombres.indexOf(item.apellido) === -1){
+      nombres.push(item.apellido)
+      goles.push(item.anotacion)
     }
-  })
-  return goleador
+    else{
+      goles[nombres.indexOf(item.apellido)] += item.anotacion
+    }
+  },)
+  return nombres[goles.indexOf(Math.max.apply(null, goles))]
 }
 
 console.log("Equipo ganador: "+equipoGanador(anotacionPorJugadorEnLog()))
-console.log("Jugador que mas anoto: "+goleador(anotacionPorJugadorEnLog(), obtenerEquipoA(), obtenerEquipoB()))
-
+console.log("Jugador que mas anoto: "+obtenerGoleador(anotacionPorJugadorEnLog()))
 
 
 
